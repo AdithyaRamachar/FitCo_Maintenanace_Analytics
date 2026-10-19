@@ -1,0 +1,3874 @@
+{
+  "datasets": [
+    {
+      "name": "3ab4e32e",
+      "displayName": "ds_headline",
+      "queryLines": [
+        "SELECT\n",
+        "  MAX(\n",
+        "    CASE\n",
+        "      WHEN period = 'last_30d' THEN corrective_tickets\n",
+        "    END\n",
+        "  ) AS corrective_tickets,\n",
+        "  MAX(\n",
+        "    CASE\n",
+        "      WHEN period = 'prior_30d' THEN corrective_tickets\n",
+        "    END\n",
+        "  ) AS corrective_tickets_prior,\n",
+        "  MAX(\n",
+        "    CASE\n",
+        "      WHEN period = 'last_30d' THEN sla_compliance\n",
+        "    END\n",
+        "  ) AS sla_compliance,\n",
+        "  MAX(\n",
+        "    CASE\n",
+        "      WHEN period = 'last_30d' THEN mttr_hours_median\n",
+        "    END\n",
+        "  ) AS mttr_hours_median\n",
+        "FROM\n",
+        "  workspace.fitco_gold.v_headline_kpis"
+      ],
+      "catalog": "workspace",
+      "schema": "default"
+    },
+    {
+      "name": "85c4d0e0",
+      "displayName": "ds_kpi_monthly",
+      "queryLines": [
+        "SELECT * FROM workspace.fitco_gold.v_kpi_monthly;"
+      ],
+      "columns": [
+        {
+          "displayName": "sla_compliance_rate",
+          "description": "Ratio of SLA-met tickets to SLA-eligible tickets",
+          "expression": "SUM(sla_met_tickets) * 1.0 / NULLIF(SUM(sla_eligible_tickets), 0)"
+        }
+      ]
+    },
+    {
+      "name": "c3d7e23c",
+      "displayName": "ds_backlog",
+      "queryLines": [
+        "SELECT * FROM workspace.fitco_gold.v_backlog_open;"
+      ]
+    },
+    {
+      "name": "2723c47d",
+      "displayName": "ds_preventive",
+      "queryLines": [
+        "\r\n",
+        "SELECT * FROM workspace.fitco_gold.v_preventive_completion;"
+      ],
+      "columns": [
+        {
+          "displayName": "pm_on_time_rate",
+          "description": "Ratio of on-time completed preventive tasks to total tasks due",
+          "expression": "SUM(completed_on_time) * 1.0 / NULLIF(SUM(tasks_due), 0)"
+        }
+      ]
+    },
+    {
+      "name": "0870aefa",
+      "displayName": "ds_asset",
+      "queryLines": [
+        "SELECT * FROM workspace.fitco_gold.v_asset_reliability;"
+      ],
+      "columns": [
+        {
+          "displayName": "failures_per_asset_year",
+          "description": "Average 365-day corrective tickets per asset, grouped by category",
+          "expression": "SUM(corrective_365d) * 1.0 / NULLIF(COUNT(asset_id), 0)"
+        }
+      ]
+    },
+    {
+      "name": "ba657a48",
+      "displayName": "ds_model",
+      "queryLines": [
+        "SELECT * FROM workspace.fitco_gold.v_model_failure_rates WHERE sample_ok;"
+      ]
+    },
+    {
+      "name": "6904457e",
+      "displayName": "ds_symptom",
+      "asset_name": "workspace.default.ds_symptom_metric_view"
+    },
+    {
+      "name": "92f5e653",
+      "displayName": "ds_lifecycle",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_lifecycle_economics",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "0f94addb",
+      "displayName": "ds_supplier",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_supplier_scorecard",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ca34adbd",
+      "displayName": "ds_supplier_monthly_sla",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_supplier_monthly_sla",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          },
+          {
+            "name": "sla_compliance_rate",
+            "expr": "SUM(sla_met_tickets) * 1.0 / NULLIF(SUM(sla_eligible_tickets), 0)",
+            "displayName": "SLA Compliance Rate"
+          }
+        ]
+      }
+    },
+    {
+      "name": "41891b8a",
+      "displayName": "ds_supplier_deterioration",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_supplier_deterioration",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "9e7076dd",
+      "displayName": "ds_supplier_invoice_variance",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_supplier_invoice_variance",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "abaf723a",
+      "displayName": "ds_cost",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_cost_monthly_invoice",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "a8999e38",
+      "displayName": "ds_drivers",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_cost_driver_decomposition",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "01a9696f",
+      "displayName": "ds_country",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_country_unit_economics",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "13863584",
+      "displayName": "ds_club",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_club_scorecard_latest",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "5f80bc6a",
+      "displayName": "ds_recon",
+      "config": {
+        "version": "1.1",
+        "source": "workspace.fitco_gold.v_reconciliation_summary",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          }
+        ],
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ]
+      }
+    },
+    {
+      "name": "8609751d",
+      "displayName": "ds_exceptions",
+      "config": {
+        "source": "workspace.fitco_gold.v_exceptions",
+        "measures": [
+          {
+            "name": "count",
+            "expr": "COUNT(*)",
+            "comment": "Represents the total number of rows in the dataset. Use this measure to count all",
+            "displayName": "Count"
+          }
+        ],
+        "version": "1.1",
+        "dimensions": [
+          {
+            "expr": "source.*"
+          },
+          {
+            "name": "country",
+            "expr": "clubs.country"
+          },
+          {
+            "name": "ownership_model",
+            "expr": "clubs.ownership_model"
+          },
+          {
+            "name": "asset_category",
+            "expr": "assets.asset_category"
+          },
+          {
+            "name": "supplier_name",
+            "expr": "suppliers.supplier_name"
+          },
+          {
+            "name": "month_start",
+            "expr": "CAST(DATE_TRUNC('MONTH', source.generated_on) AS DATE)"
+          }
+        ],
+        "joins": [
+          {
+            "name": "clubs",
+            "source": "workspace.fitco_gold.dim_club",
+            "on": "source.club_id = clubs.club_id"
+          },
+          {
+            "name": "assets",
+            "source": "workspace.fitco_gold.dim_asset",
+            "on": "source.asset_id = assets.asset_id"
+          },
+          {
+            "name": "suppliers",
+            "source": "workspace.fitco_gold.dim_supplier",
+            "on": "source.supplier_id = suppliers.supplier_id"
+          }
+        ]
+      }
+    },
+    {
+      "name": "asset_top25",
+      "displayName": "ds_asset_top25",
+      "queryLines": [
+        "SELECT\n",
+        "  asset_id,\n",
+        "  club_name,\n",
+        "  model_code,\n",
+        "  SUM(repeat_30d_flag) AS repeat_30d_tickets,\n",
+        "  SUM(corrective_flag) AS corrective_total,\n",
+        "  SUM(downtime_hours) AS downtime_hours\n",
+        "FROM\n",
+        "  workspace.fitco_gold.v_dash_ticket\n",
+        "GROUP BY\n",
+        "  asset_id,\n",
+        "  club_name,\n",
+        "  model_code\n",
+        "ORDER BY\n",
+        "  repeat_30d_tickets DESC\n",
+        "LIMIT 25"
+      ]
+    },
+    {
+      "name": "30576522",
+      "displayName": "ds_dim_club",
+      "queryLines": [
+        "SELECT club_id, club_name, city, country, ownership_model, operating_model, maturity FROM workspace.fitco_gold.dim_club;"
+      ]
+    },
+    {
+      "name": "971a8e4b",
+      "displayName": "ds_dim_asset",
+      "queryLines": [
+        "SELECT asset_id, club_id, asset_category, asset_type, manufacturer, model_code, life_stage, criticality, proactive_service_programme FROM workspace.fitco_gold.dim_asset;"
+      ]
+    },
+    {
+      "name": "d9c408fe",
+      "displayName": "ds_dim_supplier",
+      "queryLines": [
+        "SELECT supplier_id, supplier_name, supplier_type, preferred_supplier, is_oem_service_partner FROM workspace.fitco_gold.dim_supplier;"
+      ]
+    },
+    {
+      "name": "dcd16360",
+      "displayName": "ds_dim_date",
+      "queryLines": [
+        "SELECT date_day, month_start, year, quarter, month_num, year_month, week_start, is_weekend\r\n",
+        "FROM workspace.fitco_gold.dim_date;"
+      ]
+    },
+    {
+      "name": "4c45c052",
+      "displayName": "ds_dim_country_category",
+      "queryLines": [
+        "-- ds_dim_country_category  (only needed for datasets that have no club/asset key)\r\n",
+        "SELECT DISTINCT c.country, a.asset_category\r\n",
+        "FROM workspace.fitco_gold.dim_club c JOIN workspace.fitco_gold.dim_asset a USING (club_id);"
+      ]
+    },
+    {
+      "name": "b02df358",
+      "displayName": "ds_ticket",
+      "queryLines": [
+        "\tSELECT * FROM workspace.fitco_gold.v_dash_ticket"
+      ],
+      "columns": [
+        {
+          "displayName": "sla_compliance_rate",
+          "description": "Ratio of SLA-met tickets to SLA-eligible tickets on closed-date basis",
+          "expression": "SUM(sla_met_flag) * 1.0 / NULLIF(SUM(sla_eligible_flag), 0)"
+        },
+        {
+          "displayName": "repeat_rate_30d",
+          "description": "30-day repeat ticket rate: repeat tickets divided by total corrective tickets",
+          "expression": "SUM(repeat_30d_flag) * 1.0 / NULLIF(SUM(corrective_flag), 0)"
+        },
+        {
+          "displayName": "age_bucket",
+          "description": "Open-age bucket for backlog ageing based on open_age_hours",
+          "expression": "CASE WHEN open_age_hours < 24 THEN '<24h' WHEN open_age_hours < 72 THEN '24-72h' WHEN open_age_hours < 168 THEN '72-168h' WHEN open_age_hours < 336 THEN '168-336h' ELSE '>336h' END"
+        }
+      ]
+    }
+  ],
+  "relationshipGraphs": [
+    {
+      "sources": [
+        {
+          "name": "ds_headline",
+          "datasetName": "3ab4e32e"
+        },
+        {
+          "name": "ds_kpi_mothly",
+          "datasetName": "85c4d0e0"
+        },
+        {
+          "name": "ds_backlog",
+          "datasetName": "c3d7e23c"
+        },
+        {
+          "name": "ds_preventive",
+          "datasetName": "2723c47d"
+        },
+        {
+          "name": "ds_asset",
+          "datasetName": "0870aefa"
+        },
+        {
+          "name": "ds_model",
+          "datasetName": "ba657a48"
+        },
+        {
+          "name": "v_symptom_root_cause",
+          "datasetName": "6904457e"
+        },
+        {
+          "name": "v_lifecycle_economics",
+          "datasetName": "92f5e653"
+        },
+        {
+          "name": "v_supplier_scorecard",
+          "datasetName": "0f94addb"
+        },
+        {
+          "name": "v_supplier_monthly_sla",
+          "datasetName": "ca34adbd"
+        },
+        {
+          "name": "v_supplier_deterioration",
+          "datasetName": "41891b8a"
+        },
+        {
+          "name": "v_supplier_invoice_variance",
+          "datasetName": "9e7076dd"
+        },
+        {
+          "name": "v_cost_monthly_invoice",
+          "datasetName": "abaf723a"
+        },
+        {
+          "name": "v_cost_driver_decomposition",
+          "datasetName": "a8999e38"
+        },
+        {
+          "name": "v_country_unit_economics",
+          "datasetName": "01a9696f"
+        },
+        {
+          "name": "v_club_scorecard_latest",
+          "datasetName": "13863584"
+        },
+        {
+          "name": "v_reconciliation_summary",
+          "datasetName": "5f80bc6a"
+        },
+        {
+          "name": "v_exceptions",
+          "datasetName": "8609751d"
+        },
+        {
+          "name": "ds_asset_top25",
+          "datasetName": "asset_top25"
+        },
+        {
+          "name": "Untitled_dataset",
+          "datasetName": "30576522"
+        },
+        {
+          "name": "Untitled_dataset_1",
+          "datasetName": "971a8e4b"
+        },
+        {
+          "name": "Untitled_dataset_2",
+          "datasetName": "d9c408fe"
+        },
+        {
+          "name": "Untitled_dataset_3",
+          "datasetName": "dcd16360"
+        },
+        {
+          "name": "Untitled_dataset_4",
+          "datasetName": "4c45c052"
+        },
+        {
+          "name": "Untitled_dataset_5",
+          "datasetName": "b02df358"
+        }
+      ],
+      "relationships": [
+        {
+          "name": "ds_kpi_mothly_Untitled_dataset",
+          "from": "ds_kpi_mothly",
+          "to": "Untitled_dataset",
+          "on": "`ds_kpi_mothly`.`club_id` = `Untitled_dataset`.`club_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "ds_kpi_mothly_Untitled_dataset_3",
+          "from": "ds_kpi_mothly",
+          "to": "Untitled_dataset_3",
+          "on": "`ds_kpi_mothly`.`month_start` = `Untitled_dataset_3`.`month_start`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "ds_backlog_Untitled_dataset",
+          "from": "ds_backlog",
+          "to": "Untitled_dataset",
+          "on": "`ds_backlog`.`club_id` = `Untitled_dataset`.`club_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "ds_backlog_Untitled_dataset_1",
+          "from": "ds_backlog",
+          "to": "Untitled_dataset_1",
+          "on": "`ds_backlog`.`asset_id` = `Untitled_dataset_1`.`asset_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "ds_backlog_Untitled_dataset_2",
+          "from": "ds_backlog",
+          "to": "Untitled_dataset_2",
+          "on": "`ds_backlog`.`supplier_id` = `Untitled_dataset_2`.`supplier_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "ds_preventive_Untitled_dataset",
+          "from": "ds_preventive",
+          "to": "Untitled_dataset",
+          "on": "`ds_preventive`.`club_id` = `Untitled_dataset`.`club_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "ds_preventive_Untitled_dataset_3",
+          "from": "ds_preventive",
+          "to": "Untitled_dataset_3",
+          "on": "`ds_preventive`.`due_month` = `Untitled_dataset_3`.`month_start`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "ds_asset_Untitled_dataset_1",
+          "from": "ds_asset",
+          "to": "Untitled_dataset_1",
+          "on": "`ds_asset`.`asset_id` = `Untitled_dataset_1`.`asset_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "ds_asset_Untitled_dataset",
+          "from": "ds_asset",
+          "to": "Untitled_dataset",
+          "on": "`ds_asset`.`club_id` = `Untitled_dataset`.`club_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_club_scorecard_latest_Untitled_dataset",
+          "from": "v_club_scorecard_latest",
+          "to": "Untitled_dataset",
+          "on": "`v_club_scorecard_latest`.`club_id` = `Untitled_dataset`.`club_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_exceptions_Untitled_dataset",
+          "from": "v_exceptions",
+          "to": "Untitled_dataset",
+          "on": "`v_exceptions`.`club_id` = `Untitled_dataset`.`club_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_exceptions_Untitled_dataset_1",
+          "from": "v_exceptions",
+          "to": "Untitled_dataset_1",
+          "on": "`v_exceptions`.`asset_id` = `Untitled_dataset_1`.`asset_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_supplier_scorecard_Untitled_dataset_2",
+          "from": "v_supplier_scorecard",
+          "to": "Untitled_dataset_2",
+          "on": "`v_supplier_scorecard`.`supplier_id` = `Untitled_dataset_2`.`supplier_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_supplier_monthly_sla_Untitled_dataset_2",
+          "from": "v_supplier_monthly_sla",
+          "to": "Untitled_dataset_2",
+          "on": "`v_supplier_monthly_sla`.`supplier_id` = `Untitled_dataset_2`.`supplier_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_supplier_monthly_sla_Untitled_dataset_3",
+          "from": "v_supplier_monthly_sla",
+          "to": "Untitled_dataset_3",
+          "on": "`v_supplier_monthly_sla`.`closed_month` = `Untitled_dataset_3`.`month_start`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_supplier_deterioration_Untitled_dataset_2",
+          "from": "v_supplier_deterioration",
+          "to": "Untitled_dataset_2",
+          "on": "`v_supplier_deterioration`.`supplier_id` = `Untitled_dataset_2`.`supplier_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_supplier_invoice_variance_Untitled_dataset_2",
+          "from": "v_supplier_invoice_variance",
+          "to": "Untitled_dataset_2",
+          "on": "`v_supplier_invoice_variance`.`supplier_id` = `Untitled_dataset_2`.`supplier_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_supplier_invoice_variance_Untitled_dataset_4",
+          "from": "v_supplier_invoice_variance",
+          "to": "Untitled_dataset_4",
+          "on": "`v_supplier_invoice_variance`.`country` = `Untitled_dataset_4`.`country`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_cost_monthly_invoice_Untitled_dataset_3",
+          "from": "v_cost_monthly_invoice",
+          "to": "Untitled_dataset_3",
+          "on": "`v_cost_monthly_invoice`.`invoice_month` = `Untitled_dataset_3`.`month_start`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_country_unit_economics_Untitled_dataset_4",
+          "from": "v_country_unit_economics",
+          "to": "Untitled_dataset_4",
+          "on": "`v_country_unit_economics`.`country` = `Untitled_dataset_4`.`country`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_lifecycle_economics_Untitled_dataset_4",
+          "from": "v_lifecycle_economics",
+          "to": "Untitled_dataset_4",
+          "on": "`v_lifecycle_economics`.`asset_category` = `Untitled_dataset_4`.`asset_category`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "v_symptom_root_cause_Untitled_dataset_4",
+          "from": "v_symptom_root_cause",
+          "to": "Untitled_dataset_4",
+          "on": "`v_symptom_root_cause`.`asset_category` = `Untitled_dataset_4`.`asset_category`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "Untitled_dataset_5_Untitled_dataset",
+          "from": "Untitled_dataset_5",
+          "to": "Untitled_dataset",
+          "on": "`Untitled_dataset_5`.`club_id` = `Untitled_dataset`.`club_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "Untitled_dataset_5_Untitled_dataset_1",
+          "from": "Untitled_dataset_5",
+          "to": "Untitled_dataset_1",
+          "on": "`Untitled_dataset_5`.`asset_id` = `Untitled_dataset_1`.`asset_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "Untitled_dataset_5_Untitled_dataset_2",
+          "from": "Untitled_dataset_5",
+          "to": "Untitled_dataset_2",
+          "on": "`Untitled_dataset_5`.`supplier_id` = `Untitled_dataset_2`.`supplier_id`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        },
+        {
+          "name": "Untitled_dataset_5_Untitled_dataset_3",
+          "from": "Untitled_dataset_5",
+          "to": "Untitled_dataset_3",
+          "on": "`Untitled_dataset_5`.`opened_date` = `Untitled_dataset_3`.`date_day`",
+          "cardinality": "CARDINALITY_MANY_TO_ONE"
+        }
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "6717c7b3",
+      "displayName": "Facility Health",
+      "layout": [
+        {
+          "widget": {
+            "name": "counter_backlog",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_5__open_corrective_flag)",
+                      "expression": "SUM(`Untitled_dataset_5`.`open_corrective_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Open Corrective Backlog",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Untitled_dataset_5__open_corrective_flag)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 7,
+            "y": 0,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "line_corrective_monthly",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_5__country",
+                      "expression": "`Untitled_dataset_5`.`country`"
+                    },
+                    {
+                      "name": "Untitled_dataset_5__month_start",
+                      "expression": "`Untitled_dataset_5`.`month_start`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_5__corrective_flag)",
+                      "expression": "SUM(`Untitled_dataset_5`.`corrective_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Corrective Tickets per Month",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_5__month_start",
+                  "displayName": "Month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_5__corrective_flag)",
+                  "displayName": "Corrective Tickets",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_5__country",
+                  "displayName": "Country",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_backlog_aging",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_5__priority",
+                      "expression": "`Untitled_dataset_5`.`priority`"
+                    },
+                    {
+                      "name": "Untitled_dataset_5__age_bucket",
+                      "expression": "`Untitled_dataset_5`.`age_bucket`"
+                    },
+                    {
+                      "name": "count(Untitled_dataset_5__ticket_id)",
+                      "expression": "COUNT(`Untitled_dataset_5`.`ticket_id`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`Untitled_dataset_5`.`open_corrective_flag` = 1"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Backlog Ageing",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_5__age_bucket",
+                  "displayName": "Age Bucket",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(Untitled_dataset_5__ticket_id)",
+                  "displayName": "Tickets",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_5__priority",
+                  "displayName": "Priority",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 7,
+            "width": 4,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "table_club_heat",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_5__club_name",
+                      "expression": "`Untitled_dataset_5`.`club_name`"
+                    },
+                    {
+                      "name": "Untitled_dataset_5__country",
+                      "expression": "`Untitled_dataset_5`.`country`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_5__corrective_flag)",
+                      "expression": "SUM(`Untitled_dataset_5`.`corrective_flag`)"
+                    },
+                    {
+                      "name": "measure(Untitled_dataset_5__sla_compliance_rate)",
+                      "expression": "MEASURE(`Untitled_dataset_5`.`sla_compliance_rate`)"
+                    },
+                    {
+                      "name": "measure(Untitled_dataset_5__repeat_rate_30d)",
+                      "expression": "MEASURE(`Untitled_dataset_5`.`repeat_rate_30d`)"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_5__open_past_sla_flag)",
+                      "expression": "SUM(`Untitled_dataset_5`.`open_past_sla_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Club Scorecard",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "Untitled_dataset_5__club_name"
+                  },
+                  {
+                    "fieldName": "Untitled_dataset_5__country"
+                  },
+                  {
+                    "fieldName": "sum(Untitled_dataset_5__corrective_flag)"
+                  },
+                  {
+                    "fieldName": "measure(Untitled_dataset_5__sla_compliance_rate)"
+                  },
+                  {
+                    "fieldName": "measure(Untitled_dataset_5__repeat_rate_30d)"
+                  },
+                  {
+                    "fieldName": "sum(Untitled_dataset_5__open_past_sla_flag)"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "counter_corrective",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "ds_headline__corrective_tickets_prior",
+                      "expression": "`ds_headline`.`corrective_tickets_prior`"
+                    },
+                    {
+                      "name": "ds_headline__corrective_tickets",
+                      "expression": "`ds_headline`.`corrective_tickets`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Corrective Tickets (30d vs Prior)",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "ds_headline__corrective_tickets"
+                },
+                "target": {
+                  "fieldName": "ds_headline__corrective_tickets_prior"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "counter_sla",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "ds_headline__sla_compliance",
+                      "expression": "`ds_headline`.`sla_compliance`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "showDescription": false,
+                "title": {
+                  "value": "SLA Compliance",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "ds_headline__sla_compliance",
+                  "format": {
+                    "type": "number-percent"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 0,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "counter_mttr",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "ds_headline__mttr_hours_median",
+                      "expression": "`ds_headline`.`mttr_hours_median`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Median MTTR (h)",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "ds_headline__mttr_hours_median"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 5,
+            "y": 0,
+            "width": 2,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "counter_past_sla",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(Untitled_dataset_5__open_past_sla_flag)",
+                      "expression": "SUM(`Untitled_dataset_5`.`open_past_sla_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Tickets Past SLA",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(Untitled_dataset_5__open_past_sla_flag)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 0,
+            "width": 3,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "line_sla_trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "monthly(Untitled_dataset_5__closed_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `Untitled_dataset_5`.`closed_month`)"
+                    },
+                    {
+                      "name": "measure(Untitled_dataset_5__sla_compliance_rate)",
+                      "expression": "MEASURE(`Untitled_dataset_5`.`sla_compliance_rate`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`Untitled_dataset_5`.`closed_month` IS NOT NULL"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "SLA Compliance Trend",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(Untitled_dataset_5__closed_month)",
+                  "displayName": "Month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(Untitled_dataset_5__sla_compliance_rate)",
+                  "displayName": "SLA Compliance Rate",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "line_pm_on_time",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "ds_preventive__country",
+                      "expression": "`ds_preventive`.`country`"
+                    },
+                    {
+                      "name": "ds_preventive__due_month",
+                      "expression": "`ds_preventive`.`due_month`"
+                    },
+                    {
+                      "name": "measure(ds_preventive__pm_on_time_rate)",
+                      "expression": "MEASURE(`ds_preventive`.`pm_on_time_rate`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Preventive On-Time Rate",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "ds_preventive__due_month",
+                  "displayName": "Month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(ds_preventive__pm_on_time_rate)",
+                  "displayName": "PM On-Time Rate",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "ds_preventive__country",
+                  "displayName": "Country",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 7,
+            "width": 4,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_median_resolution",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_5__priority",
+                      "expression": "`Untitled_dataset_5`.`priority`"
+                    },
+                    {
+                      "name": "percentile(Untitled_dataset_5__resolution_hours, percentage=0_5)",
+                      "expression": "PERCENTILE(`Untitled_dataset_5`.`resolution_hours`, 0.5)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`Untitled_dataset_5`.`sla_eligible_flag` = 1"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Median Resolution Hours by Priority",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_5__priority",
+                  "displayName": "Priority",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "percentile(Untitled_dataset_5__resolution_hours, percentage=0_5)",
+                  "displayName": "Median Resolution Hours",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 7,
+            "width": 4,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "table_pm_on_time",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "ds_preventive__club_name",
+                      "expression": "`ds_preventive`.`club_name`"
+                    },
+                    {
+                      "name": "ds_preventive__country",
+                      "expression": "`ds_preventive`.`country`"
+                    },
+                    {
+                      "name": "measure(ds_preventive__pm_on_time_rate)",
+                      "expression": "MEASURE(`ds_preventive`.`pm_on_time_rate`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Club PM On-Time Rate",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "ds_preventive__club_name"
+                  },
+                  {
+                    "fieldName": "ds_preventive__country"
+                  },
+                  {
+                    "fieldName": "measure(ds_preventive__pm_on_time_rate)"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 12,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "8708ba49",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "f1cc8024",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_month_start",
+                "query": {
+                  "datasetName": "b02df358",
+                  "fields": [
+                    {
+                      "name": "month_start",
+                      "expression": "`month_start`"
+                    },
+                    {
+                      "name": "month_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_month_start",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "month_start",
+                      "expression": "`month_start`"
+                    },
+                    {
+                      "name": "month_start_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "month_start",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_month_start"
+                  },
+                  {
+                    "fieldName": "month_start",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_month_start"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "5a2da3db",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_country",
+                "query": {
+                  "datasetName": "b02df358",
+                  "fields": [
+                    {
+                      "name": "country",
+                      "expression": "`country`"
+                    },
+                    {
+                      "name": "country_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_country",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "country",
+                      "expression": "`country`"
+                    },
+                    {
+                      "name": "country_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "country",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_country"
+                  },
+                  {
+                    "fieldName": "country",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_country"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "9c1abb7d",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_club_name",
+                "query": {
+                  "datasetName": "b02df358",
+                  "fields": [
+                    {
+                      "name": "club_name",
+                      "expression": "`club_name`"
+                    },
+                    {
+                      "name": "club_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_club_name",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "club_name",
+                      "expression": "`club_name`"
+                    },
+                    {
+                      "name": "club_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "club_name",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_club_name"
+                  },
+                  {
+                    "fieldName": "club_name",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_club_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 4,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "61dd461b",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_ownership_model",
+                "query": {
+                  "datasetName": "b02df358",
+                  "fields": [
+                    {
+                      "name": "ownership_model",
+                      "expression": "`ownership_model`"
+                    },
+                    {
+                      "name": "ownership_model_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_ownership_model",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "ownership_model",
+                      "expression": "`ownership_model`"
+                    },
+                    {
+                      "name": "ownership_model_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "ownership_model",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_ownership_model"
+                  },
+                  {
+                    "fieldName": "ownership_model",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_ownership_model"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "6ddf8919",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_asset_category",
+                "query": {
+                  "datasetName": "b02df358",
+                  "fields": [
+                    {
+                      "name": "asset_category",
+                      "expression": "`asset_category`"
+                    },
+                    {
+                      "name": "asset_category_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_asset_category",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "asset_category",
+                      "expression": "`asset_category`"
+                    },
+                    {
+                      "name": "asset_category_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "asset_category",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/23bbf8042f854045875cfead3b4fb5b4_asset_category"
+                  },
+                  {
+                    "fieldName": "asset_category",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_asset_category"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 1,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "edee8d6f",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/16a0534c0df749e4865fc300929c7473_supplier_name",
+                "query": {
+                  "datasetName": "0f94addb",
+                  "fields": [
+                    {
+                      "name": "supplier_name",
+                      "expression": "`supplier_name`"
+                    },
+                    {
+                      "name": "supplier_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_supplier_name",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "supplier_name",
+                      "expression": "`supplier_name`"
+                    },
+                    {
+                      "name": "supplier_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "supplier_name",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/16a0534c0df749e4865fc300929c7473_supplier_name"
+                  },
+                  {
+                    "fieldName": "supplier_name",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_supplier_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 10,
+            "width": 1,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "957886b5",
+      "displayName": "Asset Reliability",
+      "layout": [
+        {
+          "widget": {
+            "name": "text_caption",
+            "multilineTextboxSpec": {
+              "lines": [
+                "*failure_index uses asset-years exposure; models with under 30 asset-years are hidden.*"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_lifecycle_cost",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_lifecycle_economics__proactive_service_programme",
+                      "expression": "`v_lifecycle_economics`.`proactive_service_programme`"
+                    },
+                    {
+                      "name": "v_lifecycle_economics__life_stage",
+                      "expression": "`v_lifecycle_economics`.`life_stage`"
+                    },
+                    {
+                      "name": "avg(v_lifecycle_economics__total_cost_per_asset_year_eur)",
+                      "expression": "AVG(`v_lifecycle_economics`.`total_cost_per_asset_year_eur`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Life Stage vs Cost per Asset-Year",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "v_lifecycle_economics__life_stage",
+                  "displayName": "life_stage",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(v_lifecycle_economics__total_cost_per_asset_year_eur)",
+                  "displayName": "total_cost_per_asset_year_eur",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "v_lifecycle_economics__proactive_service_programme",
+                  "displayName": "proactive_service_programme",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 1,
+            "width": 3,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_failures_per_asset_year",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_5__asset_category",
+                      "expression": "`Untitled_dataset_5`.`asset_category`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_5__corrective_flag)",
+                      "expression": "SUM(`Untitled_dataset_5`.`corrective_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Corrective Tickets by Category",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_5__asset_category",
+                  "displayName": "Asset Category",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_5__corrective_flag)",
+                  "displayName": "Corrective Tickets",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_5__asset_category",
+                  "displayName": "Asset Category",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 3,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_model_failure_index",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "max(ds_model__manufacturer)",
+                      "expression": "MAX(`ds_model`.`manufacturer`)"
+                    },
+                    {
+                      "name": "max(ds_model__asset_years)",
+                      "expression": "MAX(`ds_model`.`asset_years`)"
+                    },
+                    {
+                      "name": "avg(ds_model__repeat_30d_share)",
+                      "expression": "AVG(`ds_model`.`repeat_30d_share`)"
+                    },
+                    {
+                      "name": "ds_model__model_code",
+                      "expression": "`ds_model`.`model_code`"
+                    },
+                    {
+                      "name": "avg(ds_model__failure_index_vs_category)",
+                      "expression": "AVG(`ds_model`.`failure_index_vs_category`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "AVG(`ds_model`.`failure_index_vs_category`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Model Failure Index vs Category",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "ds_model__model_code",
+                  "scale": {
+                    "type": "categorical",
+                    "categorySize": {
+                      "type": "number-of-categories",
+                      "number": 20
+                    },
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "avg(ds_model__failure_index_vs_category)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(ds_model__failure_index_vs_category)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "extra": [
+                  {
+                    "fieldName": "max(ds_model__manufacturer)",
+                    "displayName": "Manufacturer"
+                  },
+                  {
+                    "fieldName": "max(ds_model__asset_years)",
+                    "displayName": "Asset-Years"
+                  },
+                  {
+                    "fieldName": "avg(ds_model__repeat_30d_share)",
+                    "displayName": "Repeat 30d Share"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 1,
+            "width": 3,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "table_top25",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "ds_asset_top25__asset_id",
+                      "expression": "`ds_asset_top25`.`asset_id`"
+                    },
+                    {
+                      "name": "ds_asset_top25__club_name",
+                      "expression": "`ds_asset_top25`.`club_name`"
+                    },
+                    {
+                      "name": "ds_asset_top25__model_code",
+                      "expression": "`ds_asset_top25`.`model_code`"
+                    },
+                    {
+                      "name": "ds_asset_top25__repeat_30d_tickets",
+                      "expression": "`ds_asset_top25`.`repeat_30d_tickets`"
+                    },
+                    {
+                      "name": "ds_asset_top25__corrective_total",
+                      "expression": "`ds_asset_top25`.`corrective_total`"
+                    },
+                    {
+                      "name": "ds_asset_top25__downtime_hours",
+                      "expression": "`ds_asset_top25`.`downtime_hours`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Top 25 Repeat-Failure Assets",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "ds_asset_top25__asset_id"
+                  },
+                  {
+                    "fieldName": "ds_asset_top25__club_name"
+                  },
+                  {
+                    "fieldName": "ds_asset_top25__model_code"
+                  },
+                  {
+                    "fieldName": "ds_asset_top25__repeat_30d_tickets"
+                  },
+                  {
+                    "fieldName": "ds_asset_top25__corrective_total"
+                  },
+                  {
+                    "fieldName": "ds_asset_top25__downtime_hours"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "heatmap_symptom_root_cause",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(v_symptom_root_cause__corrective_tickets)",
+                      "expression": "SUM(`v_symptom_root_cause`.`corrective_tickets`)"
+                    },
+                    {
+                      "name": "v_symptom_root_cause__symptom",
+                      "expression": "`v_symptom_root_cause`.`symptom`"
+                    },
+                    {
+                      "name": "v_symptom_root_cause__root_cause",
+                      "expression": "`v_symptom_root_cause`.`root_cause`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`v_symptom_root_cause`.`root_cause` IS NOT NULL"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Symptom × Root Cause",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "heatmap",
+              "encodings": {
+                "x": {
+                  "fieldName": "v_symptom_root_cause__symptom",
+                  "axis": {
+                    "hideTitle": false,
+                    "hideLabels": true
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "v_symptom_root_cause__root_cause",
+                  "axis": {
+                    "hideTitle": false,
+                    "hideLabels": false
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "color": {
+                  "fieldName": "sum(v_symptom_root_cause__corrective_tickets)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 6,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "scatter_age_failures",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_5__asset_category",
+                      "expression": "`Untitled_dataset_5`.`asset_category`"
+                    },
+                    {
+                      "name": "Untitled_dataset_5__asset_id",
+                      "expression": "`Untitled_dataset_5`.`asset_id`"
+                    },
+                    {
+                      "name": "max(Untitled_dataset_5__age_years_at_cutoff)",
+                      "expression": "MAX(`Untitled_dataset_5`.`age_years_at_cutoff`)"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_5__corrective_flag)",
+                      "expression": "SUM(`Untitled_dataset_5`.`corrective_flag`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Age vs Failures",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "scatter",
+              "encodings": {
+                "x": {
+                  "fieldName": "max(Untitled_dataset_5__age_years_at_cutoff)",
+                  "displayName": "Age (Years)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_5__corrective_flag)",
+                  "displayName": "Corrective Tickets",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_5__asset_category",
+                  "displayName": "Asset Category",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "extra": [
+                  {
+                    "fieldName": "Untitled_dataset_5__asset_id",
+                    "displayName": "Asset ID"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 11,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_repeat_rate_model",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_5__model_code",
+                      "expression": "`Untitled_dataset_5`.`model_code`"
+                    },
+                    {
+                      "name": "measure(Untitled_dataset_5__repeat_rate_30d)",
+                      "expression": "MEASURE(`Untitled_dataset_5`.`repeat_rate_30d`)"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_5__corrective_flag)",
+                      "expression": "SUM(`Untitled_dataset_5`.`corrective_flag`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "SUM(`Untitled_dataset_5`.`corrective_flag`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Repeat-Failure Rate by Model",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_5__model_code",
+                  "displayName": "Model Code",
+                  "scale": {
+                    "type": "categorical",
+                    "categorySize": {
+                      "type": "number-of-categories",
+                      "number": 15
+                    },
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "sum(Untitled_dataset_5__corrective_flag)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(Untitled_dataset_5__repeat_rate_30d)",
+                  "displayName": "Repeat Rate",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 1,
+            "width": 3,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_downtime_category",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "Untitled_dataset_5__asset_category",
+                      "expression": "`Untitled_dataset_5`.`asset_category`"
+                    },
+                    {
+                      "name": "sum(Untitled_dataset_5__downtime_hours)",
+                      "expression": "SUM(`Untitled_dataset_5`.`downtime_hours`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Downtime Hours by Category",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Untitled_dataset_5__asset_category",
+                  "displayName": "Asset Category",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(Untitled_dataset_5__downtime_hours)",
+                  "displayName": "Downtime Hours",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "Untitled_dataset_5__asset_category",
+                  "displayName": "Asset Category",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 11,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "73cd7d48",
+      "displayName": "Supplier & Financial Performance",
+      "layout": [
+        {
+          "widget": {
+            "name": "table_deterioration",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_supplier_deterioration__supplier_name",
+                      "expression": "`v_supplier_deterioration`.`supplier_name`"
+                    },
+                    {
+                      "name": "v_supplier_deterioration__supplier_type",
+                      "expression": "`v_supplier_deterioration`.`supplier_type`"
+                    },
+                    {
+                      "name": "v_supplier_deterioration__n_recent",
+                      "expression": "`v_supplier_deterioration`.`n_recent`"
+                    },
+                    {
+                      "name": "v_supplier_deterioration__sla_recent",
+                      "expression": "`v_supplier_deterioration`.`sla_recent`"
+                    },
+                    {
+                      "name": "v_supplier_deterioration__sla_baseline",
+                      "expression": "`v_supplier_deterioration`.`sla_baseline`"
+                    },
+                    {
+                      "name": "v_supplier_deterioration__drop_pp",
+                      "expression": "`v_supplier_deterioration`.`drop_pp`"
+                    },
+                    {
+                      "name": "v_supplier_deterioration__z_score",
+                      "expression": "`v_supplier_deterioration`.`z_score`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Deterioration Alerts",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "v_supplier_deterioration__supplier_name"
+                  },
+                  {
+                    "fieldName": "v_supplier_deterioration__supplier_type"
+                  },
+                  {
+                    "fieldName": "v_supplier_deterioration__n_recent"
+                  },
+                  {
+                    "fieldName": "v_supplier_deterioration__sla_recent"
+                  },
+                  {
+                    "fieldName": "v_supplier_deterioration__sla_baseline"
+                  },
+                  {
+                    "fieldName": "v_supplier_deterioration__drop_pp"
+                  },
+                  {
+                    "fieldName": "v_supplier_deterioration__z_score"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 5,
+            "width": 4,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "table_supplier_sla",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_supplier_scorecard__supplier_name",
+                      "expression": "`v_supplier_scorecard`.`supplier_name`"
+                    },
+                    {
+                      "name": "v_supplier_scorecard__tickets",
+                      "expression": "`v_supplier_scorecard`.`tickets`"
+                    },
+                    {
+                      "name": "v_supplier_scorecard__sla_pct",
+                      "expression": "`v_supplier_scorecard`.`sla_pct`"
+                    },
+                    {
+                      "name": "v_supplier_scorecard__sla_wilson_low",
+                      "expression": "`v_supplier_scorecard`.`sla_wilson_low`"
+                    },
+                    {
+                      "name": "v_supplier_scorecard__sla_wilson_high",
+                      "expression": "`v_supplier_scorecard`.`sla_wilson_high`"
+                    },
+                    {
+                      "name": "v_supplier_scorecard__sla_rank_in_segment",
+                      "expression": "`v_supplier_scorecard`.`sla_rank_in_segment`"
+                    },
+                    {
+                      "name": "v_supplier_scorecard__sample_ok",
+                      "expression": "`v_supplier_scorecard`.`sample_ok`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Supplier SLA with Confidence Interval",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "v_supplier_scorecard__supplier_name"
+                  },
+                  {
+                    "fieldName": "v_supplier_scorecard__tickets"
+                  },
+                  {
+                    "fieldName": "v_supplier_scorecard__sla_pct"
+                  },
+                  {
+                    "fieldName": "v_supplier_scorecard__sla_wilson_low"
+                  },
+                  {
+                    "fieldName": "v_supplier_scorecard__sla_wilson_high"
+                  },
+                  {
+                    "fieldName": "v_supplier_scorecard__sla_rank_in_segment"
+                  },
+                  {
+                    "fieldName": "v_supplier_scorecard__sample_ok"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "table_cost_drivers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_cost_driver_decomposition__country",
+                      "expression": "`v_cost_driver_decomposition`.`country`"
+                    },
+                    {
+                      "name": "v_cost_driver_decomposition__asset_category",
+                      "expression": "`v_cost_driver_decomposition`.`asset_category`"
+                    },
+                    {
+                      "name": "v_cost_driver_decomposition__intervention_type",
+                      "expression": "`v_cost_driver_decomposition`.`intervention_type`"
+                    },
+                    {
+                      "name": "v_cost_driver_decomposition__delta_cost_eur",
+                      "expression": "`v_cost_driver_decomposition`.`delta_cost_eur`"
+                    },
+                    {
+                      "name": "v_cost_driver_decomposition__volume_effect_eur",
+                      "expression": "`v_cost_driver_decomposition`.`volume_effect_eur`"
+                    },
+                    {
+                      "name": "v_cost_driver_decomposition__rate_effect_eur",
+                      "expression": "`v_cost_driver_decomposition`.`rate_effect_eur`"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "`v_cost_driver_decomposition`.`delta_cost_eur`"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Cost Driver Decomposition",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "v_cost_driver_decomposition__country"
+                  },
+                  {
+                    "fieldName": "v_cost_driver_decomposition__asset_category"
+                  },
+                  {
+                    "fieldName": "v_cost_driver_decomposition__intervention_type"
+                  },
+                  {
+                    "fieldName": "v_cost_driver_decomposition__delta_cost_eur"
+                  },
+                  {
+                    "fieldName": "v_cost_driver_decomposition__volume_effect_eur"
+                  },
+                  {
+                    "fieldName": "v_cost_driver_decomposition__rate_effect_eur"
+                  }
+                ],
+                "rowOrder": [
+                  {
+                    "by": "column-reversed",
+                    "field": {
+                      "index": 3
+                    }
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 19,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "line_supplier_sla_trend",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_supplier_monthly_sla__supplier_name",
+                      "expression": "`v_supplier_monthly_sla`.`supplier_name`"
+                    },
+                    {
+                      "name": "monthly(v_supplier_monthly_sla__closed_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `v_supplier_monthly_sla`.`closed_month`)"
+                    },
+                    {
+                      "name": "measure(v_supplier_monthly_sla__sla_compliance_rate)",
+                      "expression": "MEASURE(`v_supplier_monthly_sla`.`sla_compliance_rate`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Supplier SLA Trend",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(v_supplier_monthly_sla__closed_month)",
+                  "displayName": "Month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(v_supplier_monthly_sla__sla_compliance_rate)",
+                  "displayName": "SLA Compliance Rate",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "v_supplier_monthly_sla__supplier_name",
+                  "displayName": "supplier_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 0,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "line_cost_per_member",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_country_unit_economics__country",
+                      "expression": "`v_country_unit_economics`.`country`"
+                    },
+                    {
+                      "name": "v_country_unit_economics__month_start",
+                      "expression": "`v_country_unit_economics`.`month_start`"
+                    },
+                    {
+                      "name": "v_country_unit_economics__maintenance_per_member_eur",
+                      "expression": "`v_country_unit_economics`.`maintenance_per_member_eur`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`v_country_unit_economics`.`cost_month_incomplete` = 0"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Maintenance Cost per Member by Country",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "v_country_unit_economics__month_start",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "v_country_unit_economics__maintenance_per_member_eur",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "v_country_unit_economics__country",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_invoice_variance",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_supplier_invoice_variance__supplier_name",
+                      "expression": "`v_supplier_invoice_variance`.`supplier_name`"
+                    },
+                    {
+                      "name": "sum(v_supplier_invoice_variance__overcharge_eur)",
+                      "expression": "SUM(`v_supplier_invoice_variance`.`overcharge_eur`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Overcharge by Supplier",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "v_supplier_invoice_variance__supplier_name",
+                  "axis": {
+                    "hideTitle": false,
+                    "hideLabels": true
+                  },
+                  "displayName": "supplier_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(v_supplier_invoice_variance__overcharge_eur)",
+                  "displayName": "overcharge_eur",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "v_supplier_invoice_variance__supplier_name",
+                  "displayName": "supplier_name",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 5,
+            "width": 4,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_maint_pct_revenue",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_country_unit_economics__country",
+                      "expression": "`v_country_unit_economics`.`country`"
+                    },
+                    {
+                      "name": "avg(v_country_unit_economics__maintenance_pct_of_revenue)",
+                      "expression": "AVG(`v_country_unit_economics`.`maintenance_pct_of_revenue`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`v_country_unit_economics`.`cost_month_incomplete` = 0"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Maintenance % of Revenue",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "v_country_unit_economics__country",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "avg(v_country_unit_economics__maintenance_pct_of_revenue)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 14,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "pie_cost_borne_by",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "sum(v_cost_monthly_invoice__realised_cost_eur)",
+                      "expression": "SUM(`v_cost_monthly_invoice`.`realised_cost_eur`)"
+                    },
+                    {
+                      "name": "v_cost_monthly_invoice__cost_borne_by",
+                      "expression": "`v_cost_monthly_invoice`.`cost_borne_by`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Cost Borne By",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "sum(v_cost_monthly_invoice__realised_cost_eur)",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "realised_cost_eur"
+                },
+                "color": {
+                  "fieldName": "v_cost_monthly_invoice__cost_borne_by",
+                  "displayName": "cost_borne_by",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 5,
+            "width": 4,
+            "height": 4
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_cost_monthly",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_cost_monthly_invoice__intervention_type",
+                      "expression": "`v_cost_monthly_invoice`.`intervention_type`"
+                    },
+                    {
+                      "name": "monthly(v_cost_monthly_invoice__invoice_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `v_cost_monthly_invoice`.`invoice_month`)"
+                    },
+                    {
+                      "name": "sum(v_cost_monthly_invoice__realised_cost_eur)",
+                      "expression": "SUM(`v_cost_monthly_invoice`.`realised_cost_eur`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Realised Maintenance Cost / Month",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(v_cost_monthly_invoice__invoice_month)",
+                  "displayName": "Month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(v_cost_monthly_invoice__realised_cost_eur)",
+                  "displayName": "realised_cost_eur",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "v_cost_monthly_invoice__intervention_type",
+                  "displayName": "intervention_type",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 9,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "table_reconciliation",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_reconciliation_summary__check_name",
+                      "expression": "`v_reconciliation_summary`.`check_name`"
+                    },
+                    {
+                      "name": "v_reconciliation_summary__line_count",
+                      "expression": "`v_reconciliation_summary`.`line_count`"
+                    },
+                    {
+                      "name": "v_reconciliation_summary__net_eur",
+                      "expression": "`v_reconciliation_summary`.`net_eur`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Reconciliation Summary",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "v_reconciliation_summary__check_name"
+                  },
+                  {
+                    "fieldName": "v_reconciliation_summary__line_count"
+                  },
+                  {
+                    "fieldName": "v_reconciliation_summary__net_eur"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 24,
+            "width": 12,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_spend_status",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "monthly(v_cost_monthly_invoice__invoice_month)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `v_cost_monthly_invoice`.`invoice_month`)"
+                    },
+                    {
+                      "name": "sum(v_cost_monthly_invoice__realised_cost_eur)",
+                      "expression": "SUM(`v_cost_monthly_invoice`.`realised_cost_eur`)"
+                    },
+                    {
+                      "name": "sum(v_cost_monthly_invoice__pending_cost_eur)",
+                      "expression": "SUM(`v_cost_monthly_invoice`.`pending_cost_eur`)"
+                    },
+                    {
+                      "name": "sum(v_cost_monthly_invoice__disputed_cost_eur)",
+                      "expression": "SUM(`v_cost_monthly_invoice`.`disputed_cost_eur`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Spend Status",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "mark": {
+                "layout": "stack"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly(v_cost_monthly_invoice__invoice_month)",
+                  "displayName": "Month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fields": [
+                    {
+                      "fieldName": "sum(v_cost_monthly_invoice__realised_cost_eur)",
+                      "displayName": "Realised"
+                    },
+                    {
+                      "fieldName": "sum(v_cost_monthly_invoice__pending_cost_eur)",
+                      "displayName": "Pending"
+                    },
+                    {
+                      "fieldName": "sum(v_cost_monthly_invoice__disputed_cost_eur)",
+                      "displayName": "Disputed"
+                    }
+                  ],
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 9,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "line_owned_margin",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_country_unit_economics__country",
+                      "expression": "`v_country_unit_economics`.`country`"
+                    },
+                    {
+                      "name": "v_country_unit_economics__month_start",
+                      "expression": "`v_country_unit_economics`.`month_start`"
+                    },
+                    {
+                      "name": "v_country_unit_economics__ebitda_less_rent_margin_owned",
+                      "expression": "`v_country_unit_economics`.`ebitda_less_rent_margin_owned`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`v_country_unit_economics`.`cost_month_incomplete` = 0"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Owned-Club Margin Proxy",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "v_country_unit_economics__month_start",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "v_country_unit_economics__ebitda_less_rent_margin_owned",
+                  "displayName": "EBITDA Less Rent Margin (Owned)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "v_country_unit_economics__country",
+                  "displayName": "Country",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 19,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "20c2d9c5",
+      "displayName": "Issues",
+      "layout": [
+        {
+          "widget": {
+            "name": "bar_exposure_by_club",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_exceptions__club_name",
+                      "expression": "`v_exceptions`.`club_name`"
+                    },
+                    {
+                      "name": "sum(v_exceptions__estimated_cost_impact_eur)",
+                      "expression": "SUM(`v_exceptions`.`estimated_cost_impact_eur`)"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`v_exceptions`.`club_name` IS NOT NULL"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "SUM(`v_exceptions`.`estimated_cost_impact_eur`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Exposure by Club (Top 15)",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "v_exceptions__club_name",
+                  "scale": {
+                    "type": "categorical",
+                    "categorySize": {
+                      "type": "number-of-categories",
+                      "number": 15
+                    },
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "sum(v_exceptions__estimated_cost_impact_eur)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(v_exceptions__estimated_cost_impact_eur)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "bar_exceptions_type_severity",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_exceptions__severity",
+                      "expression": "`v_exceptions`.`severity`"
+                    },
+                    {
+                      "name": "v_exceptions__flag_type",
+                      "expression": "`v_exceptions`.`flag_type`"
+                    },
+                    {
+                      "name": "count(v_exceptions__exception_id)",
+                      "expression": "COUNT(`v_exceptions`.`exception_id`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Exceptions by Type and Severity",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "v_exceptions__flag_type",
+                  "displayName": "flag_type",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(v_exceptions__exception_id)",
+                  "displayName": "exception_id",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "v_exceptions__severity",
+                  "displayName": "severity",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "table_exception_register",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "v_exceptions__severity",
+                      "expression": "`v_exceptions`.`severity`"
+                    },
+                    {
+                      "name": "v_exceptions__flag_type",
+                      "expression": "`v_exceptions`.`flag_type`"
+                    },
+                    {
+                      "name": "v_exceptions__club_name",
+                      "expression": "`v_exceptions`.`club_name`"
+                    },
+                    {
+                      "name": "v_exceptions__supplier_name",
+                      "expression": "`v_exceptions`.`supplier_name`"
+                    },
+                    {
+                      "name": "v_exceptions__asset_id",
+                      "expression": "`v_exceptions`.`asset_id`"
+                    },
+                    {
+                      "name": "v_exceptions__ticket_id",
+                      "expression": "`v_exceptions`.`ticket_id`"
+                    },
+                    {
+                      "name": "v_exceptions__reason",
+                      "expression": "`v_exceptions`.`reason`"
+                    },
+                    {
+                      "name": "v_exceptions__supporting_value",
+                      "expression": "`v_exceptions`.`supporting_value`"
+                    },
+                    {
+                      "name": "v_exceptions__supporting_unit",
+                      "expression": "`v_exceptions`.`supporting_unit`"
+                    },
+                    {
+                      "name": "v_exceptions__estimated_cost_impact_eur",
+                      "expression": "`v_exceptions`.`estimated_cost_impact_eur`"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "orders": [
+                    {
+                      "direction": "ASC",
+                      "expression": "`v_exceptions`.`severity`"
+                    },
+                    {
+                      "direction": "DESC",
+                      "expression": "`v_exceptions`.`estimated_cost_impact_eur`"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Exception Register",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "v_exceptions__severity"
+                  },
+                  {
+                    "fieldName": "v_exceptions__flag_type"
+                  },
+                  {
+                    "fieldName": "v_exceptions__club_name"
+                  },
+                  {
+                    "fieldName": "v_exceptions__supplier_name"
+                  },
+                  {
+                    "fieldName": "v_exceptions__asset_id"
+                  },
+                  {
+                    "fieldName": "v_exceptions__ticket_id"
+                  },
+                  {
+                    "fieldName": "v_exceptions__reason"
+                  },
+                  {
+                    "fieldName": "v_exceptions__supporting_value"
+                  },
+                  {
+                    "fieldName": "v_exceptions__supporting_unit"
+                  },
+                  {
+                    "fieldName": "v_exceptions__estimated_cost_impact_eur"
+                  }
+                ],
+                "rowOrder": [
+                  {
+                    "by": "column",
+                    "field": {
+                      "index": 0
+                    }
+                  },
+                  {
+                    "by": "column-reversed",
+                    "field": {
+                      "index": 9
+                    }
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 12,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_flag_type",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_flag_type",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "flag_type",
+                      "expression": "`flag_type`"
+                    },
+                    {
+                      "name": "flag_type_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Flag Type",
+                  "fields": []
+                }
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "flag_type",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_flag_type"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_severity",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_severity",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "severity",
+                      "expression": "`severity`"
+                    },
+                    {
+                      "name": "severity_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Severity",
+                  "fields": []
+                }
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "severity",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_severity"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "filter_club_name",
+            "queries": [
+              {
+                "name": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_club_name",
+                "query": {
+                  "datasetName": "8609751d",
+                  "fields": [
+                    {
+                      "name": "club_name",
+                      "expression": "`club_name`"
+                    },
+                    {
+                      "name": "club_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Club",
+                  "fields": []
+                }
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "club_name",
+                    "queryName": "dashboards/01f1ca0278a810bf906696dfba78cab8/datasets/b0ea1a86497e4ddda856eb44d7cbc902_club_name"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "text_caption",
+            "multilineTextboxSpec": {
+              "lines": [
+                "**Note:** Supplier-level exceptions have no club or country association. Applying a Country or Club filter will hide these records from the charts and table below."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 7,
+            "width": 12,
+            "height": 1
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
